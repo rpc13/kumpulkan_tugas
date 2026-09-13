@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pengumpulan Tugas Daring</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0284c7 100%);
+      min-height: 100vh;
+    }
+  </style>
+</head>
+<body class="flex items-center justify-center p-4 font-sans text-slate-800">
+
+  <div class="w-full max-w-lg bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden border border-blue-100">
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-blue-700 to-indigo-800 p-6 text-white text-center">
+      <div class="inline-flex p-3 bg-white/10 rounded-full mb-3">
+        <i class="fa-solid me-0 fa-cloud-arrow-up text-3xl"></i>
+      </div>
+      <h1 class="text-2xl font-bold tracking-wide">Pengumpulan Tugas Daring</h1>
+      <p class="text-blue-100 text-sm mt-1">Silakan isi data dan unggah dokumentasi tugas Anda</p>
+    </div>
+
+    <!-- Form Utama -->
+    <div class="p-6 space-y-5">
+      <!-- Input Nama -->
+      <div>
+        <label class="block text-sm font-semibold text-slate-700 mb-1">Nama Lengkap Siswa</label>
+        <div class="relative">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+            <i class="fa-solid fa-user"></i>
+          </span>
+          <input type="text" id="studentName" placeholder="Contoh: Budi Santoso" 
+            class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition bg-slate-50/50">
+        </div>
+      </div>
+
+      <!-- Pilih Mata Pelajaran -->
+      <div>
+        <label class="block text-sm font-semibold text-slate-700 mb-1">Mata Pelajaran</label>
+        <div class="relative">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+            <i class="fa-solid fa-book"></i>
+          </span>
+          <select id="subject" class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition bg-slate-50/50">
+            <option value="" disabled selected>-- Pilih Mata Pelajaran --</option>
+            <option value="Matematika">Matematika</option>
+            <option value="IPA">IPA</option>
+            <option value="IPS">IPS</option>
+            <option value="Bahasa Indonesia">Bahasa Indonesia</option>
+            <option value="Bahasa Inggris">Bahasa Inggris</option>
+            <option value="PPKn">PPKn</option>
+            <option value="SBdP">SBdP</option>
+            <option value="PJOK">PJOK</option>
+            <option value="Agama">Pendidikan Agama</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Tombol Utama -->
+      <button onclick="openOptionModal()" 
+        class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg hover:shadow-xl transition duration-200 transform active:scale-98 flex items-center justify-center gap-2">
+        <i class="fa-solid fa-paper-plane"></i>
+        <span>Kumpulkan Tugas</span>
+      </button>
+    </div>
+
+    <!-- Footer -->
+    <div class="bg-slate-50 px-6 py-4 text-center text-xs text-slate-500 border-t border-slate-100">
+      File tugas akan tersimpan otomatis di Google Drive Kelas.
+    </div>
+  </div>
+
+  <!-- Modal Pilihan Kamera / Upload -->
+  <div id="optionModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl transform transition-all text-center space-y-4">
+      <h3 class="text-lg font-bold text-slate-800">Pilih Metode Pengumpulan</h3>
+      <p class="text-xs text-slate-500">Pilih bagaimana Anda ingin mengirimkan foto/video tugas Anda.</p>
+
+      <div class="space-y-3 pt-2">
+        <!-- Kamera Langsung -->
+        <button onclick="triggerFileInput('camera')" 
+          class="w-full bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 font-semibold py-3 px-4 rounded-xl flex items-center justify-center gap-3 transition">
+          <i class="fa-solid fa-camera text-xl"></i>
+          <span>Buka Kamera (Langsung)</span>
+        </button>
+
+        <!-- Upload Galeri -->
+        <button onclick="triggerFileInput('gallery')" 
+          class="w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 font-semibold py-3 px-4 rounded-xl flex items-center justify-center gap-3 transition">
+          <i class="fa-solid fa-images text-xl"></i>
+          <span>Upload Gambar / Video</span>
+        </button>
+      </div>
+
+      <button onclick="closeOptionModal()" class="text-xs text-slate-400 hover:text-slate-600 font-medium pt-2">
+        Batal
+      </button>
+    </div>
+  </div>
+
+  <!-- Hidden Inputs untuk File -->
+  <input type="file" id="cameraInput" accept="image/*,video/*" capture="environment" class="hidden" onchange="handleFilesSelected(this.files)">
+  <input type="file" id="galleryInput" accept="image/*,video/*" multiple class="hidden" onchange="handleFilesSelected(this.files)">
+
+  <!-- Overlay Loading -->
+  <div id="loadingOverlay" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm hidden flex-col items-center justify-center text-white z-50 space-y-4">
+    <div class="w-12 h-12 border-4 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
+    <p class="font-semibold text-lg" id="loadingText">Mengunggah tugas, mohon tunggu...</p>
+  </div>
+
+  <script>
+    // GANTI URL DI BAWAH INI DENGAN URL WEB APP GOOGLE APPS SCRIPT ANDA
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwW_lCNU_mCe2m8pbGHwlSr1duEuTiTZ8tPk8HY1agvUpVkCBdxUuXOf6m262RHPRs/exec";
+
+    function openOptionModal() {
+      const name = document.getElementById('studentName').value.trim();
+      const subject = document.getElementById('subject').value;
+
+      if (!name) {
+        alert("Silakan isi nama lengkap siswa terlebih dahulu!");
+        return;
+      }
+      if (!subject) {
+        alert("Silakan pilih mata pelajaran!");
+        return;
+      }
+
+      document.getElementById('optionModal').classList.remove('hidden');
+    }
+
+    function closeOptionModal() {
+      document.getElementById('optionModal').classList.add('hidden');
+    }
+
+    function triggerFileInput(type) {
+      closeOptionModal();
+      if (type === 'camera') {
+        document.getElementById('cameraInput').click();
+      } else {
+        document.getElementById('galleryInput').click();
+      }
+    }
+
+    async function handleFilesSelected(fileList) {
+      if (!fileList || fileList.length === 0) return;
+
+      const name = document.getElementById('studentName').value.trim();
+      const subject = document.getElementById('subject').value;
+
+      showLoading(true, "Membaca file...");
+
+      try {
+        const filesData = [];
+        for (let i = 0; i < fileList.length; i++) {
+          const file = fileList[i];
+          const base64 = await convertBase64(file);
+          filesData.push({
+            name: file.name,
+            mimeType: file.type,
+            base64: base64.split(',')[1] // Ambil data murninya saja
+          });
+        }
+
+        showLoading(true, "Mengirim ke Google Drive...");
+
+        const payload = {
+          studentName: name,
+          subject: subject,
+          files: filesData
+        };
+
+        const response = await fetch(SCRIPT_URL, {
+          method: "POST",
+          body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        showLoading(false);
+
+        if (result.status === "success") {
+          alert("🎉 Berhasil! " + result.message);
+          // Reset Form
+          document.getElementById('studentName').value = '';
+          document.getElementById('subject').selectedIndex = 0;
+          document.getElementById('cameraInput').value = '';
+          document.getElementById('galleryInput').value = '';
+        } else {
+          alert("❌ Terjadi kesalahan: " + result.message);
+        }
+
+      } catch (error) {
+        showLoading(false);
+        alert("❌ Gagal mengunggah file. Pastikan koneksi internet stabil.");
+        console.error(error);
+      }
+    }
+
+    function convertBase64(file) {
+      return new Promise((resolve, reject) => {
+        const fileReader = new FileReader();
+        fileReader.readAsDataURL(file);
+        fileReader.onload = () => resolve(fileReader.result);
+        fileReader.onerror = (error) => reject(error);
+      });
+    }
+
+    function showLoading(show, text = "") {
+      const overlay = document.getElementById('loadingOverlay');
+      const textElem = document.getElementById('loadingText');
+      if (show) {
+        textElem.innerText = text;
+        overlay.classList.remove('hidden');
+      } else {
+        overlay.classList.add('hidden');
+      }
+    }
+  </script>
+</body>
+</html>
