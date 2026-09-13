@@ -86,17 +86,17 @@
   <div id="optionModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
     <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl transform transition-all text-center space-y-4">
       <h3 class="text-lg font-bold text-slate-800">Pilih Metode Pengambilan File</h3>
-      <p class="text-xs text-slate-500">Pilih opsi foto/video tugas yang akan dikirimkan.</p>
+      <p class="text-xs text-slate-500">Pilih opsi foto (dokumentasi langsung) atau file dari galeri.</p>
 
       <div class="space-y-3 pt-2">
-        <!-- Ambil Foto/Video dari Kamera Langsung -->
+        <!-- PERBAIKAN: Tombol ini difokuskan hanya untuk KAMERA (Foto) -->
         <button onclick="triggerFileInput('camera')" 
           class="w-full bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 font-semibold py-3 px-4 rounded-xl flex items-center justify-center gap-3 transition">
           <i class="fa-solid fa-camera text-xl"></i>
-          <span>Buka Kamera (Dokumentasi Langsung)</span>
+          <span>Buka Kamera (Foto Langsung)</span>
         </button>
 
-        <!-- Unggah File dari Galeri -->
+        <!-- Tombol ini untuk GALERI (Gambar/Video) -->
         <button onclick="triggerFileInput('gallery')" 
           class="w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 font-semibold py-3 px-4 rounded-xl flex items-center justify-center gap-3 transition">
           <i class="fa-solid fa-images text-xl"></i>
@@ -111,7 +111,11 @@
   </div>
 
   <!-- Hidden File Inputs -->
-  <input type="file" id="cameraInput" accept="image/*,video/*" capture="environment" class="hidden" onchange="handleFilesSelected(this.files)">
+  
+  <!-- PERBAIKAN: Input khusus kamera, hanya accept image dan ada capture="environment" -->
+  <input type="file" id="cameraInput" accept="image/*" capture="environment" class="hidden" onchange="handleFilesSelected(this.files)">
+  
+  <!-- Input galeri (multiple), tetap menerima image dan video -->
   <input type="file" id="galleryInput" accept="image/*,video/*" multiple class="hidden" onchange="handleFilesSelected(this.files)">
 
   <!-- Overlay Loading State -->
@@ -146,6 +150,10 @@
 
     function triggerFileInput(type) {
       closeOptionModal();
+      // Reset input value agar jika upload file yang sama berturut-turut tetap memicu event change
+      document.getElementById('cameraInput').value = '';
+      document.getElementById('galleryInput').value = '';
+
       if (type === 'camera') {
         document.getElementById('cameraInput').click();
       } else {
@@ -165,6 +173,10 @@
         const filesData = [];
         for (let i = 0; i < fileList.length; i++) {
           const file = fileList[i];
+          // Cek ukuran file (opsional, misal batasi 20MB)
+          if (file.size > 20 * 1024 * 1024) {
+            throw new Error(`File ${file.name} terlalu besar (maks 20MB).`);
+          }
           const base64 = await convertBase64(file);
           filesData.push({
             name: file.name,
@@ -195,15 +207,13 @@
           // Reset Form
           document.getElementById('studentName').value = '';
           document.getElementById('subject').selectedIndex = 0;
-          document.getElementById('cameraInput').value = '';
-          document.getElementById('galleryInput').value = '';
         } else {
-          alert("❌ Terjadi kesalahan: " + result.message);
+          alert("❌ Terjadi kesalahan dari server: " + result.message);
         }
 
       } catch (error) {
         showLoading(false);
-        alert("❌ Gagal mengunggah file. Pastikan koneksi internet stabil.");
+        alert("❌ Gagal mengunggah: " + error.message);
         console.error(error);
       }
     }
