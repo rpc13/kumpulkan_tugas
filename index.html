@@ -4,7 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pengumpulan Tugas Daring</title>
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icon -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
     body {
@@ -15,19 +17,22 @@
 </head>
 <body class="flex items-center justify-center p-4 font-sans text-slate-800">
 
+  <!-- Container Utama -->
   <div class="w-full max-w-lg bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden border border-blue-100">
-    <!-- Header -->
+    
+    <!-- Header Web -->
     <div class="bg-gradient-to-r from-blue-700 to-indigo-800 p-6 text-white text-center">
       <div class="inline-flex p-3 bg-white/10 rounded-full mb-3">
-        <i class="fa-solid me-0 fa-cloud-arrow-up text-3xl"></i>
+        <i class="fa-solid fa-cloud-arrow-up text-3xl"></i>
       </div>
       <h1 class="text-2xl font-bold tracking-wide">Pengumpulan Tugas Daring</h1>
-      <p class="text-blue-100 text-sm mt-1">Silakan isi data dan unggah dokumentasi tugas Anda</p>
+      <p class="text-blue-100 text-sm mt-1">Lengkapi nama dan mata pelajaran untuk mengunggah tugas</p>
     </div>
 
-    <!-- Form Utama -->
+    <!-- Form Isian -->
     <div class="p-6 space-y-5">
-      <!-- Input Nama -->
+      
+      <!-- Input Nama Siswa -->
       <div>
         <label class="block text-sm font-semibold text-slate-700 mb-1">Nama Lengkap Siswa</label>
         <div class="relative">
@@ -49,51 +54,53 @@
           <select id="subject" class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition bg-slate-50/50">
             <option value="" disabled selected>-- Pilih Mata Pelajaran --</option>
             <option value="Matematika">Matematika</option>
-            <option value="IPA">IPA</option>
-            <option value="IPS">IPS</option>
             <option value="Bahasa Indonesia">Bahasa Indonesia</option>
+            <option value="IPAS">IPAS</option>
+            <option value="Pancasila">Pancasila</option>
             <option value="Bahasa Inggris">Bahasa Inggris</option>
-            <option value="PPKn">PPKn</option>
-            <option value="SBdP">SBdP</option>
+            <option value="Seni Budaya">Seni Budaya</option>
+            <option value="Bahasa Daerah">Bahasa Daerah</option>
+            <option value="Koding">Koding</option>
+            <option value="Kokurikuler">Kokurikuler</option>
             <option value="PJOK">PJOK</option>
-            <option value="Agama">Pendidikan Agama</option>
+            <option value="Agama">Agama</option>
           </select>
         </div>
       </div>
 
-      <!-- Tombol Utama -->
+      <!-- Tombol Kumpulkan Tugas -->
       <button onclick="openOptionModal()" 
-        class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg hover:shadow-xl transition duration-200 transform active:scale-98 flex items-center justify-center gap-2">
+        class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg hover:shadow-xl transition duration-200 transform active:scale-95 flex items-center justify-center gap-2">
         <i class="fa-solid fa-paper-plane"></i>
         <span>Kumpulkan Tugas</span>
       </button>
     </div>
 
-    <!-- Footer -->
+    <!-- Footer Info -->
     <div class="bg-slate-50 px-6 py-4 text-center text-xs text-slate-500 border-t border-slate-100">
-      File tugas akan tersimpan otomatis di Google Drive Kelas.
+      <i class="fa-solid fa-shield-halved text-blue-600 mr-1"></i> File tugas tersimpan otomatis di Google Drive Kelas.
     </div>
   </div>
 
-  <!-- Modal Pilihan Kamera / Upload -->
+  <!-- Modal Pilihan Upload -->
   <div id="optionModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
     <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl transform transition-all text-center space-y-4">
-      <h3 class="text-lg font-bold text-slate-800">Pilih Metode Pengumpulan</h3>
-      <p class="text-xs text-slate-500">Pilih bagaimana Anda ingin mengirimkan foto/video tugas Anda.</p>
+      <h3 class="text-lg font-bold text-slate-800">Pilih Metode Pengambilan File</h3>
+      <p class="text-xs text-slate-500">Pilih opsi foto/video tugas yang akan dikirimkan.</p>
 
       <div class="space-y-3 pt-2">
-        <!-- Kamera Langsung -->
+        <!-- Ambil Foto/Video dari Kamera Langsung -->
         <button onclick="triggerFileInput('camera')" 
           class="w-full bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 font-semibold py-3 px-4 rounded-xl flex items-center justify-center gap-3 transition">
           <i class="fa-solid fa-camera text-xl"></i>
-          <span>Buka Kamera (Langsung)</span>
+          <span>Buka Kamera (Dokumentasi Langsung)</span>
         </button>
 
-        <!-- Upload Galeri -->
+        <!-- Unggah File dari Galeri -->
         <button onclick="triggerFileInput('gallery')" 
           class="w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 font-semibold py-3 px-4 rounded-xl flex items-center justify-center gap-3 transition">
           <i class="fa-solid fa-images text-xl"></i>
-          <span>Upload Gambar / Video</span>
+          <span>Upload Gambar / Video dari Galeri</span>
         </button>
       </div>
 
@@ -103,18 +110,18 @@
     </div>
   </div>
 
-  <!-- Hidden Inputs untuk File -->
+  <!-- Hidden File Inputs -->
   <input type="file" id="cameraInput" accept="image/*,video/*" capture="environment" class="hidden" onchange="handleFilesSelected(this.files)">
   <input type="file" id="galleryInput" accept="image/*,video/*" multiple class="hidden" onchange="handleFilesSelected(this.files)">
 
-  <!-- Overlay Loading -->
+  <!-- Overlay Loading State -->
   <div id="loadingOverlay" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm hidden flex-col items-center justify-center text-white z-50 space-y-4">
     <div class="w-12 h-12 border-4 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
     <p class="font-semibold text-lg" id="loadingText">Mengunggah tugas, mohon tunggu...</p>
   </div>
 
   <script>
-    // GANTI URL DI BAWAH INI DENGAN URL WEB APP GOOGLE APPS SCRIPT ANDA
+    // URL Web App Google Apps Script
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwW_lCNU_mCe2m8pbGHwlSr1duEuTiTZ8tPk8HY1agvUpVkCBdxUuXOf6m262RHPRs/exec";
 
     function openOptionModal() {
@@ -152,7 +159,7 @@
       const name = document.getElementById('studentName').value.trim();
       const subject = document.getElementById('subject').value;
 
-      showLoading(true, "Membaca file...");
+      showLoading(true, "Membaca & memproses file...");
 
       try {
         const filesData = [];
@@ -162,11 +169,11 @@
           filesData.push({
             name: file.name,
             mimeType: file.type,
-            base64: base64.split(',')[1] // Ambil data murninya saja
+            base64: base64.split(',')[1]
           });
         }
 
-        showLoading(true, "Mengirim ke Google Drive...");
+        showLoading(true, "Mengirim tugas ke Google Drive...");
 
         const payload = {
           studentName: name,
@@ -184,7 +191,7 @@
         showLoading(false);
 
         if (result.status === "success") {
-          alert("🎉 Berhasil! " + result.message);
+          alert("🎉 Berhasil! Tugas Anda telah tersimpan di Google Drive.");
           // Reset Form
           document.getElementById('studentName').value = '';
           document.getElementById('subject').selectedIndex = 0;
